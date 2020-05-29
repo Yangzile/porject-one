@@ -1,0 +1,87 @@
+
+
+<% include login-header.html %>
+    <!--head-->
+
+    <!--loginArea-->
+    <div class="loginArea">
+        <div class="py-container login">
+            <div class="loginform">
+                <!--<ul class="sui-nav nav-tabs tab-wraped">-->
+                <ul class="nav nav-tabs tab-content">
+                    <li class="asideLi" id="shaoma"><a href="#index" data-toggle="tab">扫描登录</a></li>
+                    <li class="asideLi active" id="denglu"><a href="#profile" data-toggle="tab">账户登录</a></li>
+                </ul>
+                <div class="tab-content tab-wraped">
+                    <div id="index" class="tab-pane ">
+                        <p>
+                            <img src="images/二维码.jpg" alt="" style="margin-top:50px;">
+                        </p>
+                    </div>
+                    <div id="profile" class="tab-pane active">
+                        <form class="form" method="post" id="#loginform" name="login-form"  action="/login">
+                            <div class="input-prepend">
+                                <span class="add-on loginname"></span>
+                                <input type="text" class="span2 input-xfat" placeholder="请输入用户名" id="userName" name="userName">
+                            </div>
+                            <div class="input-prepend">
+                                <span class="add-on loginpwd"></span>
+                                <input type="password" class="span2 input-xfat" placeholder="请输入密码" id="passWord" name="passWord">
+                            </div>
+                            <div class="setting">
+                                <label class="checkbox inline"><input name="m1" type="checkbox" checked> 自动登录</label>
+                                <span class="forget">忘记密码？</span>
+                            </div>
+                            <div class="logined">
+                                <button class="btn btn-block btn-xlarge btn-danger" type="button" id="login-btn" name="login-btn">登&nbsp;&nbsp;录</button>
+                            </div>
+                        </form>
+
+                        <div class="registration">
+                            <ul>
+                                <li>
+                                    <a href="#"></a>
+                                </li>
+                                <li>
+                                    <a href="#"></a>
+                                </li>
+                                <li>
+                                    <a href="#"></a>
+                                </li>
+                                <li>
+                                    <a href="#"></a>
+                                </li>
+                            </ul>
+
+                            <a href="/register">立即注册</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <script >
+         // $(function () {
+         // //开始
+         //     $("#login-btn").click(function() {
+         //         $.ajax({
+         //             url: "/login",
+         //             type: "post",
+         //             data: {
+         //                 userName: $("#user").val(),
+         //                 passWord: $("#pass").val(),
+         //             },
+         //             success: function(data){    //   alert后台的返回值
+         //                 if (data)
+         //                     alert(data);
+         //             },
+         //             error: function(){
+         //                 alert('访问失败');
+         //             }
+         //         });
+         //     });
+         // });
+     </script>
+<script  src="javascripts/login-check.js"></script>
+<% include login-footer.html %>

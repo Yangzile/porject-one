@@ -1,0 +1,271 @@
+<% include index-head.html %>
+
+<div class="py-container goods-all">
+
+    <h4 class="all">
+        全部商品
+        <span><%=arr.length %></span>
+    </h4>
+    <table cellspacing="0" cellpadding="0" border="0" width="100%">
+        <thead>
+        <tr>
+            <th width="10%">
+                <input id="toggle-all" type="checkbox" >
+            </th>
+            <th width="35%">商品</th>
+            <th width="10%">单价（元）</th>
+            <th width="10%">数量</th>
+            <th width="10%">小计（元）</th>
+            <th width="10%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+<%for(var i=0;i< arr.length ; i++) {%>
+        <tr data-id="1">
+            <td>
+                <input data-id="1" class="choice " type="checkbox"  name='chkBulletin'>
+            </td>
+
+            <td>
+                <div class="good-item ">
+                    <div class="item-img">
+                        <img src="<%= arr[i].img%>">
+                    </div>
+                    <div class="item-msg" id="item-msg"><%= arr[i].attr%></div>
+                </div>
+            </td>
+            <td>
+                <span class="price"><%= arr[i].pice%></span>
+            </td>
+            <td>
+                <div class="clearfix have">
+                    <div>
+                        <a href="#" class="increment mins ">-</a>
+                        <input autocomplete="off" type="text" value="<%= arr[i].number%>" minnum="1" class="itxt">
+                        <a href="#" class="increment plus ">+</a>
+                    </div>
+                    <%if( 0< arr[i].kucun ) {%>
+                    <div class="youhuo">有货</div>
+                    <% }else { %>
+                    <div class="youhuo">缺货</div>
+                    <%}%>
+                </div>
+            </td>
+
+            <td><span class="sum"><%=(arr[i].number*arr[i].pice) %></span></td>
+
+
+            <td>
+                <div>
+                    <a class="delGood" data-id="1" href="#">删除</a>
+                </div>
+                <div>移到我的关注</div>
+            </td>
+        </tr>
+        <%}%>
+        </tbody>
+    </table>
+
+    <div id="footerSelect" class="cart-tool clearfix">
+        <div class="cart-tool-left clearfix fl">
+            <a id="delAllBtn" href="#" >删除选中的商品</a>
+        </div>
+        <div class="money-box">
+            <div class="sumprice">
+                <div class="sumprice-top">
+                    <span>
+                        已选择
+                        <strong id="totalNum">0</strong> 件商品
+                    </span>
+                    <span>
+                        <em>总价（不含运费）：</em>
+                        <i id="totalPrice" class="summoney">0</i>
+                    </span>
+                </div>
+            </div>
+            <div class="sumbtn">
+                <a class="sum-btn" href="#">结算</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="javascripts/cart_data.js"></script>
+
+<!--<script>
+    $(function () {
+        // 获取选中项的个数
+        // 获取每项的单价数
+        // 获取每项的数量数
+
+      // 点击单个按钮的事件
+        function dangecheck() {
+            $('.choice').click(function () {
+                $('.choice').each( function () {
+                    // if ($(this).prop("checked")) {//判断复选框有没有选中
+                    //     total();//改总价
+                    //     countAll();//最后的总数量
+                    // }
+                        total();//改总价
+                        countAll();//最后的总数量
+                });
+            })
+
+        }
+
+        // 点击全部删除按钮的事件
+        function delAllClick() {
+            var delAllBtn = $('#delAllBtn');
+            delAllBtn.on('click', function () {
+                $(".choice").each(function () {//先循环每个小计
+                    if (($(this).parents("tr").find(".choice")).prop("checked")) {//判断复选框有没有选中
+                        $(this).parents("tr").remove();
+                    }
+                });
+                total();//改总价
+                countAll();//最后的总数量
+            });
+
+          /*  $('#delAllBtn').click(function(){
+                var dbname = $(this).data("dbname");
+                if(confirm("确认删除吗?")){
+                    var _this = $(this);
+                    $.ajax({
+                        type: "post",
+                        url: "?r=dbs/del_db",
+                        data: {'dbname':dbname},
+                        dataType: "json",
+                        success:function(msg){
+                            if(msg === '1'){
+                                _this.parent().parent().parent().remove();
+                            }
+                        }
+                    });
+                }
+            });*/
+        }
+
+        // 点击全选按钮的事件
+        function toggleAllClick() {
+
+            $("#toggle-all").click(function()
+            {
+                if($(this).is(":checked")==true)
+                {
+                    $("input[name='chkBulletin']").each(function()
+                    {
+                        $(this) .prop('checked', true);
+                    });
+
+                }
+                else
+                {
+                    $("input[name='chkBulletin']").each(function()
+                    {
+                        $(this).prop('checked', false);
+                    });
+                }
+                total();//改总价
+                countAll();//最后的总数量
+            });
+
+        }
+
+        // 点击 '+' 事件
+        function plusClick() {
+            $('.plus').each( function () {
+                $(this).click(function () {
+                    // 改变数量
+                    var count = parseFloat($(this).prev().val());
+
+                    count++;
+                    $(this).prev().prop("value",count);
+
+                    // 改小计
+                    var price = parseFloat($(this).parents("tr").find(".price").html());
+                    // console.log(price);
+                    var money = price * count;
+                    $(this).parents("tr").find(".sum").html(money);
+                    total();//改总价
+                    countAll();//最后的总数量
+                });
+
+
+            })
+        }
+
+        // 点击 '-' 事件
+        function minsClick() {
+
+            $('.mins').each(function () {
+                $(this).click(function () {
+                    //1.改变数量
+                    var count = parseFloat($(this).next().val());
+                    count&#45;&#45;;
+                    if (count < 1) { //当数量减到1时不能再减
+                        alert('不能少于1')
+                        return;
+                    }
+                    $(this).next().prop("value",count);
+                    var price = parseFloat($(this).parents("tr").find(".price").html());
+                    var money = price * count;
+                    $(this).parents("tr").find(".sum").html(money);
+                    total();//改总价
+                    countAll();//最后的总数量
+                });
+            })
+        }
+
+        // 单个删除
+        function delGoodClick() {
+
+            $('.delGood').each(function(){
+                $(this).click(function () {
+                    let re = $(this).parents("tr"); //找到要删除的行
+                    if (confirm("你确定删除吗？")) {
+                        re.remove();
+                    }
+                    total();//改总价
+                    countAll();//最后的总数量
+                })
+            })
+        }
+
+        // 合计
+        function total() {
+            let allsum = 0;
+            $(".sum").each(function () {//先循环每个小计
+                if (($(this).parents("tr").find(".choice")).prop("checked")) {//判断复选框有没有选中
+                    allsum += parseFloat($(this).html());
+                }
+                $(".summoney").html(allsum);
+            });
+        }
+        //总数量
+        function countAll() {
+            let counts = 0;
+
+            for(let i=0;i<$(".choice").length;i++){
+
+                if($(".choice")[i].checked==true){ //注意此块用jquery不好实现
+                    console.log($('.itxt')[i].value);
+                   counts+=parseInt( $('.itxt')[i].value);
+                }
+            }
+
+            console.log($("#totalNum").html());
+            console.log(counts);
+            // $("strong").innerHTML=10;
+            $("#totalNum").html(counts);
+        }
+
+        toggleAllClick();
+        plusClick();
+        minsClick();
+        delGoodClick();
+        delAllClick();
+        dangecheck();
+    })
+</script>-->
+<% include index-footer.html %>
